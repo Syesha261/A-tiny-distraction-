@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Study Break Mode</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #fff5fb;
+  text-align: center;
+  color: #333;
+  overflow-x: hidden;
+}
+
+.page { display: none; padding: 50px 20px; }
+.active { display: block; }
+
+button {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 12px;
+  background: #ff6fae;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+button:hover { background: #ff4f98; }
+
+.tab {
+  display: inline-block;
+  margin: 10px;
+  padding: 10px 14px;
+  background: #ffe3f0;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.tab:hover { background: #ffd1e8; }
+
+ul { list-style: none; padding: 0; }
+
+/* HEART */
+#heart {
+  width: 3cm;
+  height: 3cm;
+  background: pink;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 50px auto;
+  cursor: pointer;
+  animation: float 2s infinite;
+  font-weight: bold;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+/* FLOATING OBJECTS */
+.float {
+  position: fixed;
+  pointer-events: none;
+  opacity: 0.8;
+  z-index: 999;
+}
+
+/* hearts */
+.heart {
+  color: pink;
+  font-size: 14px;
+  animation: fall 6s linear infinite;
+}
+
+/* balloons */
+.balloon {
+  color: white;
+  font-size: 14px;
+  text-shadow: 0 0 2px #ccc;
+  animation: fall 8s linear infinite;
+}
+
+/* confetti */
+.confetti {
+  position: fixed;
+  top: -10px;
+  font-size: 12px;
+  animation: confettiFall 4s linear forwards;
+}
+
+@keyframes fall {
+  0% { transform: translateY(-10vh); }
+  100% { transform: translateY(110vh); }
+}
+
+@keyframes confettiFall {
+  0% { transform: translateY(-10vh) rotate(0deg); }
+  100% { transform: translateY(110vh) rotate(360deg); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1 -->
+<div id="page1" class="page active">
+  <h1>Hey baby 💗</h1>
+  <p>Exam season has been rough… so I made this for you.</p>
+  <button onclick="go(2)">Enter study break mode</button>
+</div>
+
+<!-- PAGE 2 -->
+<div id="page2" class="page">
+  <h2>Tap through 💫</h2>
+
+  <div class="tab" onclick="tap2(0)">Tap me</div>
+  <div class="tab" onclick="tap2(1)">Tap me</div>
+  <div class="tab" onclick="tap2(2)">Tap me</div>
+
+  <p id="tabText2"></p>
+
+  <button onclick="go(3)">Next page</button>
+</div>
+
+<!-- PAGE 3 -->
+<div id="page3" class="page">
+  <h2>Things I’m looking forward to after exams 💕</h2>
+
+  <ul>
+    <li>Hearing all about your exams</li>
+    <li>Watching movies together</li>
+    <li>Spending time with you</li>
+    <li>Attacking you with affection</li>
+  </ul>
+
+  <button onclick="go(4)">Next page</button>
+</div>
+
+<!-- PAGE 4 -->
+<div id="page4" class="page">
+  <h2>Tell me something nice 💌</h2>
+
+  <button onclick="nice()">Say something nice</button>
+  <p id="niceText"></p>
+
+  <button onclick="go(5)">Next page</button>
+</div>
+
+<!-- PAGE 5 -->
+<div id="page5" class="page">
+  <h2>Final step 💖</h2>
+
+  <div id="heart" onclick="go(6)">
+    click on me
+  </div>
+</div>
+
+<!-- PAGE 6 -->
+<div id="page6" class="page">
+  <h1>I love you, baby 💗</h1>
+
+  <p>
+    I hope this made you smile a little.<br><br>
+    Okay, go back to studying now<br>
+    (gives you big fat kiss on your cute cheeks and a long hug)
+  </p>
+</div>
+
+<script>
+function go(page){
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById("page"+page).classList.add("active");
+
+  if(page === 6){
+    startEffects();
+  }
+}
+
+// PAGE 2 taps
+let i2 = 0;
+const t2 = [
+  "You’re doing amazing 💗",
+  "Keep going, I’m proud of you",
+  "One step at a time"
+];
+
+function tap2(i){
+  if(i === i2){
+    document.getElementById("tabText2").innerText = t2[i];
+    i2++;
+  }
+}
+
+// page 4 messages
+function nice(){
+  const msgs = [
+    "You are stronger than you think 💗",
+    "You’ve got this",
+    "I’m proud of you",
+    "You’re doing better than you think"
+  ];
+  document.getElementById("niceText").innerText =
+    msgs[Math.floor(Math.random()*msgs.length)];
+}
+
+// EFFECTS ON LAST PAGE
+function startEffects(){
+  // hearts
+  for(let i=0;i<10;i++){
+    let h = document.createElement("div");
+    h.className = "float heart";
+    h.innerHTML = "💗";
+    h.style.left = Math.random()*100 + "vw";
+    h.style.animationDuration = (4+Math.random()*4)+"s";
+    document.body.appendChild(h);
+  }
+
+  // balloons
+  for(let i=0;i<10;i++){
+    let b = document.createElement("div");
+    b.className = "float balloon";
+    b.innerHTML = "🎈";
+    b.style.left = Math.random()*100 + "vw";
+    b.style.animationDuration = (6+Math.random()*4)+"s";
+    document.body.appendChild(b);
+  }
+
+  // confetti
+  for(let i=0;i<60;i++){
+    let c = document.createElement("div");
+    c.className = "confetti";
+    c.innerHTML = "✨";
+    c.style.left = Math.random()*100 + "vw";
+    c.style.animationDuration = (2+Math.random()*3)+"s";
+    document.body.appendChild(c);
+  }
+}
+</script>
+
+</body>
+</html>
